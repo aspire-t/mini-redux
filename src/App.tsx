@@ -1,45 +1,56 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { Component } from 'react'
+import { createStore } from './redux'
 
-function App() {
-  const [count, setCount] = useState(0)
+const INCREMENT = 'ADD'
+const DECREMENT = 'MINUS'
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+const reducer = (state = initState, action: any) => {
+  switch (action.type) {
+    case INCREMENT:
+      return { number: state.number + 1 }
+    case DECREMENT:
+      return { number: state.number - 1 }
+    default:
+      return state
+  }
 }
 
-export default App
+let initState = { number: 0 }
+
+const store = createStore(reducer, initState)
+
+class Counter extends Component {
+  public unsubscribe: any
+  public state: any
+  constructor(props: any) {
+    super(props)
+    this.state = { number: 0 }
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => this.setState({ number: store.getState().number }))
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  render() {
+    return (
+      <div>
+        <p>{this.state.number}</p>
+        <button onClick={() => store.dispatch({ type: 'ADD' })}>+</button>
+        <button onClick={() => store.dispatch({ type: 'MINUS' })}>-</button>
+        <button onClick={
+          () => {
+            setTimeout(() => {
+              store.dispatch({ type: 'ADD' })
+            }, 1000)
+          }
+        }>1秒后加1</button>
+      </div>
+    )
+  }
+}
+
+export default Counter
