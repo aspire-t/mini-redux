@@ -1,6 +1,9 @@
 import { Component } from 'react'
 import { createStore, bindActionCreators } from './redux'
 
+import Counter1 from './components/Counter1'
+import Counter2 from './components/Counter2'
+
 const INCREMENT = 'ADD'
 const DECREMENT = 'MINUS'
 
@@ -76,6 +79,9 @@ class Counter extends Component {
             }, 1000)
           }
         }>1秒后加1</button>
+
+        <Counter1></Counter1>
+        <Counter2></Counter2>
       </div>
     )
   }
