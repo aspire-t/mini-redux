@@ -12,12 +12,15 @@ export default class Counter1 extends Component {
 		super(props)
 		this.state = { number: 0 }
 	}
+
 	componentDidMount() {
 		this.unsubscribe = store.subscribe(() => this.setState({ number: store.getState().counter1.number }))
 	}
+
 	componentWillUnmount() {
 		this.unsubscribe()
 	}
+
 	render() {
 		return (
 			<div>

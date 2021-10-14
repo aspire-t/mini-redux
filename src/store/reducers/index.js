@@ -6,4 +6,5 @@ let rootReducer = combineReducers({
 	counter1,
 	counter2
 })
+
 export default rootReducer

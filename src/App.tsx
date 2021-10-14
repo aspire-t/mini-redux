@@ -1,8 +1,13 @@
 import { Component } from 'react'
 import { createStore, bindActionCreators } from './redux'
+import { Provider } from './react-redux'
+import store2 from './store'
 
 import Counter1 from './components/Counter1'
 import Counter2 from './components/Counter2'
+import Counter3 from './components/Counter3'
+import Counter4 from './components/Counter4'
+import Counter5 from './components/Counter5'
 
 const INCREMENT = 'ADD'
 const DECREMENT = 'MINUS'
@@ -57,7 +62,7 @@ class Counter extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginLeft: '20px' }}>
         <p>{this.state.number}</p>
         {/* 点击事件用来派发 */}
         <button onClick={() => store.dispatch({ type: 'ADD' })}>+</button>
@@ -69,7 +74,9 @@ class Counter extends Component {
             }, 1000)
           }
         }>1秒后加1</button>
+
         <div>boundActions</div>
+
         <button onClick={boundActions.add}>+</button>
         <button onClick={boundActions.minus}>-</button>
         <button onClick={
@@ -80,8 +87,18 @@ class Counter extends Component {
           }
         }>1秒后加1</button>
 
+        <div>CombineReducers</div>
+
         <Counter1></Counter1>
         <Counter2></Counter2>
+
+        <div>React-Redux</div>
+
+        <Provider store={store2}>
+          <Counter3 />
+          <Counter4 />
+          <Counter5 />
+        </Provider>
       </div>
     )
   }
