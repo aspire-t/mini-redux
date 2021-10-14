@@ -18,8 +18,19 @@ class Counter3 extends Component {
 	}
 }
 
+// 把仓库中的状态映射为组件的属性对象
 let mapStateToProps = (state: any) => state.counter1
-
+// connect的第二个参数应该是这样
+// 把dispatch方法映射为一个属性对象
+// let mapDispatchToProps = (dispatch: any) => ({
+// 	add1() {
+// 		return { type: types.ADD1 }
+// 	},
+// 	minus1() {
+// 		return { type: types.MINUS1 }
+// 	}
+// })
+// connect的第二个参数可以是对象(actions)，也可以是函数(mapDispatchToProps)
 export default connect(
 	mapStateToProps,
 	actions

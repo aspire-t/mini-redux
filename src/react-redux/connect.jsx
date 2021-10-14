@@ -43,6 +43,13 @@ import { bindActionCreators } from '../redux'
 // 	}
 // }
 
+/**
+ * 
+ * @param {*} mapStateToProps 这个实际上就是要绑定的值
+ * @param {*} mapDispatchToProps 这个实际上是action
+ * @returns 
+ */
+// export default connect(mapStateToProps, mapDispatchToProps)(OldComponent)一般这样使用，要执行两次，并且返回的是一个组件，高阶组件
 function connect (mapStateToProps, mapDispatchToProps) {
 	return function (OldComponent) {
 		return function (props) {
@@ -50,6 +57,7 @@ function connect (mapStateToProps, mapDispatchToProps) {
 			const { getState, dispatch, subscribe } = store
 			const prevState = getState()
 			const stateProps = useMemo(() => mapStateToProps(prevState), [prevState])
+
 			let dispatchProps = useMemo(() => {
 				console.log('dispatchProps render')
 				let dispatchProps
@@ -62,10 +70,17 @@ function connect (mapStateToProps, mapDispatchToProps) {
 				}
 				return dispatchProps
 			}, [dispatch])
+
+			// 强制刷新
 			const [, forceUpdate] = useReducer(x => x + 1, 0)
+
+			// 用useLayoutEffect需要尽快执行
 			useLayoutEffect(() => {
+				// 这里是订阅
 				return subscribe(forceUpdate)
 			}, [subscribe])
+
+			// 返回的是一个组件，
 			return <OldComponent {...props} {...stateProps} {...dispatchProps} />
 		}
 	}
